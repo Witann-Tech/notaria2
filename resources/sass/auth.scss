@@ -1,0 +1,43 @@
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+.background-body{
+    background-color: #063019d4;
+    opacity:0.7;
+    height: 100vh;
+    background: url("/images/6.png") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    .card-transparent {
+        background: transparent;
+    }
+
+    .form-control.form-control-material{
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        background: transparent;
+        color: #fff;
+        border-radius: 0;
+    }
+    .form-floating{
+        label{
+            color:#000;
+        }
+        .form-control-material{
+            border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        background: transparent;
+        color: #000;
+        border-radius: 0;
+        }
+    }
+
+}
