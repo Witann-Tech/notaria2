@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FormalitieTypeSteps extends Model
+class FormalityTypeStep extends Model
 {
     use HasFactory;
 
@@ -19,7 +19,7 @@ class FormalitieTypeSteps extends Model
         'aprobation_type_id'
     ];
 
-    public function Documents() {
+    /*public function Documents() {
         return $this->hasManyThrough(
             Document::class,
             FormalityTypeStepDocument::class,
@@ -28,13 +28,23 @@ class FormalitieTypeSteps extends Model
             'id',
             'document_id'
         );
-    }
+    }*/
 
     public function Aprobation() {
         return $this->belongsTo(AprobationType::class, "aprobation_type_id");
     }
 
-    public function Participants() {
+    public function documents()
+    {
+        return $this->hasMany('App\Models\FormalityTypeStepDocument');
+    }
+
+    public function participants()
+    {
+        return $this->hasMany('App\Models\FormalityTypeStepParticipant');
+    }
+
+    /*public function Participants() {
         return $this->hasManyThrough(
             ParticipantType::class,
             FormalitieTypeStepParticipant::class,
@@ -43,6 +53,6 @@ class FormalitieTypeSteps extends Model
             'id',
             'participant_type_id'
         );
-    }
+    }*/
 
 }

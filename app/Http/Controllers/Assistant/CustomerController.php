@@ -7,11 +7,10 @@ use App\Models\Customer;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Mail\Welcome;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use App\DataTables\CustomersDataTable;
-use App\Http\Requests\StoreCustomer;
-use App\Http\Requests\UpdateCustomer;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rule;
 
 class CustomerController extends Controller
 {
@@ -28,7 +27,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('customer.create');
+        return view('assistant.customers.create');
     }
 
     /**
@@ -37,28 +36,65 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCustomer $request)
+    public function store(Request $request)
     {
+        
+
+        $request->validate([
+            'name'=>'required',
+            'lastname'=>'required',
+            'email' => 'required|unique:users,email',
+            'birthdate'=>'required',
+            'address'=>'required',
+            'phone'=>'required',
+            'curp'=>'required',
+            'rfc'=>'required',
+            'job'=>'required',
+            'civil_status'=>'required',
+        ],[
+            'name.required'=>'El campo nombre es requerido',
+            'lastname.required'=>'El campo apellidos es requerido',
+            'birthdate.required'=>'El campo fecha de nacimiento es requerido',
+            'address.required'=>'El campo domicilio es requerido',
+            'phone.required'=>'El campo teléfono es requerido',
+            'curp.required'=>'El campo CURP es requerido',
+            'rfc.required'=>'El campo RFC es requerido',
+            'job.required'=>'El campo ocupación es requerido',
+            'civil_status.required'=>'El campo estado civil es requerido',
+            'email.required'=>'El campo email es requerido',
+            'email.unique'=>'Este email ya ha sido registrado',
+            'rfc.unique'=>'Este RFC ya ha sido registrado',
+            'curp.unique'=>'Esta CURP ya ha sido registrada',
+        ]);
+
         $user = new User();
         $user->rol_id = Role::CUSTOMER_ID;
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = bcrypt($user->email);
         $user->save();
 
         $customer = new Customer();
+        $customer->name = $request->name;
         $customer->lastname = $request->lastname;
-        $customer->birthplace = $request->birthplace;
-        $customer->birthdate = $request->birthdate;
-        $customer->adress = $request->adress;
+        $customer->birthdate = date('Y-m-d', strtotime($request->birthplace));
+        $customer->address = $request->adress;
         $customer->phone = $request->phone;
         $customer->curp = $request->curp;
         $customer->rfc = $request->rfc;
         $customer->job = $request->job;
         $customer->civil_status = $request->civil_status;
         $customer->user_id = $user->id;
-        $customer->save();
-        return redirect('customers')->with('message', 'Cliente creado correctamente');
+        if($customer->save()){
+            try {
+                Mail::to($customer->email)->send(new Welcome($customer));
+            } catch (\Throwable $th) {
+                
+            }
+            return redirect('customers')->with('success', 'Cliente creado correctamente');
+        }else{
+            return redirect('customers')->with('error', 'Hubo un problema, intentelo mas tarde.');
+        }
+        
     }
 
     /**
@@ -80,8 +116,8 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        $customer = Customer::with('user')->where('id', $id)->first();
-        return view('customer.edit', compact('customer'));
+        $customer = Customer::find($id);
+        return view('assistant.customers.edit', compact('customer'));
     }
 
     /**
@@ -91,24 +127,51 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCustomer $request, $id)
+    public function update(Request $request, $id)
     {
+        $request->validate([
+            'name'=>'required',
+            'lastname'=>'required',
+            'email' => ['required'],
+            'birthdate'=>'required',
+            'address'=>'required',
+            'phone'=>'required',
+            'curp'=>['required'],
+            'rfc'=>['required'],
+            'job'=>'required',
+            'civil_status'=>'required',
+        ],[
+            'name.required'=>'El campo nombre es requerido',
+            'lastname.required'=>'El campo apellidos es requerido',
+            'birthday.required'=>'El campo fecha de nacimiento es requerido',
+            'address.required'=>'El campo domicilio es requerido',
+            'phone.required'=>'El campo teléfono es requerido',
+            'curp.required'=>'El campo CURP es requerido',
+            'rfc.required'=>'El campo RFC es requerido',
+            'job.required'=>'El campo ocupación es requerido',
+            'civil_status.required'=>'El campo estado civil es requerido',
+            'email.required'=>'El campo email es requerido',
+            'email.unique'=>'Este email ya ha sido registrado',
+            'rfc.unique'=>'Este RFC ya ha sido registrado',
+            'curp.unique'=>'Esta CURP ya ha sido registrada',
+        ]);
+
         $customer = Customer::find($id);
         $customer->lastname = $request->lastname;
-        $customer->birthplace = $request->birthplace;
-        $customer->birthdate = $request->birthdate;
-        $customer->adress = $request->adress;
+        $customer->birthdate = date('Y-m-d', strtotime($request->birthdate));
+        $customer->address = $request->address;
         $customer->phone = $request->phone;
         $customer->curp = $request->curp;
         $customer->rfc = $request->rfc;
         $customer->job = $request->job;
         $customer->civil_status = $request->civil_status;
         $customer->save();
+
         $user = User::find($customer->user_id);
         $user->name = $request->name;
-        $user->email = $request->email;
         $user->save();
-        return redirect('customers')->with('message', 'Cliente actualizado correctamente');
+
+        return redirect('/admin/clientes')->with('message', 'Cliente actualizado correctamente');
     }
 
     /**
@@ -123,6 +186,6 @@ class CustomerController extends Controller
         $user_id = $customer->user_id;
         $customer->delete();
         User::destroy($user_id);
-        return redirect('customers')->with('message', 'Cliente eliminado correctamente');
+        return redirect('/admin/clientes')->with('message', 'Cliente eliminado correctamente');
     }
 }

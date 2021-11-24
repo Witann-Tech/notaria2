@@ -13,12 +13,21 @@ class Formalitie extends Model
         'name', 'description', 'expedient_id', 'formalitie_type_id', 'user_id'
     ];
 
-    public function Type(){
-        return $this->hasOne(FormalitieType::class, "id", "formalitie_type_id");
+    public function type(){
+        return $this->belongsTo('App\Models\FormalityType', 'formalitie_type_id', 'id');
+    }
+
+    public function status(){
+        return $this->belongsTo('App\Models\FormalityTypeStep', 'status_id', 'id');
     }
 
     public function Expedient(){
         return $this->hasOne(Expedient::class,  'id', 'expedient_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 
     /* public function Responsible(){

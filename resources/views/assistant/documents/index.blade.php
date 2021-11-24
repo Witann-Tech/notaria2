@@ -20,7 +20,7 @@
                     </div>
                     <!--//col-->
                     <div class="col-auto">
-                        <a class="btn app-btn-primary" href="#"><i class="far fa-plus me-2"></i>Nuevo documento</a>
+                        <a class="btn app-btn-primary" href="{{ url('/admin/documentos/create') }}"><i class="far fa-plus me-2"></i>Nuevo documento</a>
                     </div>
                 </div>
                 <!--//row-->
@@ -45,8 +45,13 @@
                         <tr>
                             <td>{{ $document->name }}</td>
                             <td>{{ $document->description }}</td>
-                            <td>
-                                <a class="btn app-btn-primary" href="{{ url('/admin/documentos/'.$document->id) }}"><i class="far fa-pencil me-2"></i>Modificar</a>
+                            <td class="d-flex justify-content-around">
+                                <a class="btn text-black text-decoration-none" href="{{ url('/admin/documentos/'.$document->id.'/edit') }}"><i class="far fa-pencil me-2"></i>Modificar</a>
+                                <form action="{{ url('/admin/documentos/'.$document->id) }}" class="deleteForm" method="post">
+                                    @csrf
+                                    @method("DELETE")
+                                    <button class="btn text-danger"><i class="far fa-trash me-2"></i>Eliminar</button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach

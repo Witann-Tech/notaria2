@@ -26,7 +26,7 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        return view('document.create');
+        return view('assistant.documents.create');
     }
 
     /**
@@ -37,8 +37,17 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name'=>'required',
+            'acceptable_formats'=>'required',
+            'expiration_range'=>'required'
+        ],[
+            'name.required'=>'El nombre es requerido',
+            'acceptable_formats.required'=>'Los formatos aceptables son requeridos',
+            'expiration_range.required'=>'El limite de caducidad es requerido',
+        ]);        
         Document::create($request->all());
-        return redirect('documents')->with('message', 'Tipo de documento creado correctamente');
+        return redirect('/admin/documentos')->with('success', 'Tipo de documento creado correctamente');
     }
 
     /**
@@ -61,7 +70,7 @@ class DocumentController extends Controller
     public function edit($id)
     {
         $document = Document::findOrFail($id);
-        return view('document.edit', compact('document'));
+        return view('assistant.documents.edit', compact('document'));
     }
 
     /**
@@ -76,8 +85,10 @@ class DocumentController extends Controller
         $document = Document::findOrFail($id);
         $document->name = $request->name;
         $document->description = $request->description;
+        $document->acceptable_formats = $request->acceptable_formats;
+        $document->expiration_range = $request->expiration_range;
         $document->save();
-        return redirect('documents')->with('message', 'Documento actualizado correctamente');
+        return redirect('/admin/documentos')->with('message', 'Documento actualizado correctamente');
     }
 
     /**
@@ -89,6 +100,6 @@ class DocumentController extends Controller
     public function destroy($id)
     {
         Document::destroy($id);
-        return redirect('documents')->with('message', 'Tipo de documento eliminado correctamente');
+        return redirect('/admin/documentos')->with('success', 'Tipo de documento eliminado correctamente');
     }
 }

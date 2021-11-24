@@ -20,7 +20,7 @@
                     </div>
                     <!--//col-->
                     <div class="col-auto">
-                        <a class="btn app-btn-primary" href="#"><i class="far fa-plus me-2"></i>Nueva cita</a>
+                        <a class="btn app-btn-primary" href="{{ url('/admin/citas/create') }}"><i class="far fa-plus me-2"></i>Nueva cita</a>
                     </div>
                 </div>
                 <!--//row-->
@@ -46,9 +46,9 @@
                         <tr>
                             <td>{{ $dating->name }}</td>
                             <td>{{ $dating->description }}</td>
-                            <td>{{ $dating->customer->lastname }} - {{ $dating->customer->curp }}</td>
+                            <td>{{ $dating->customer->user->name.' '.$dating->customer->lastname }} - {{ $dating->customer->curp }}</td>
                             <td>
-                                <a class="btn app-btn-primary" href="{{ url('/admin/citas/'.$dating->id) }}"><i class="far fa-pencil me-2"></i>Modificar</a>
+                                <a class="btn app-btn-primary" href="{{ url('/admin/citas/'.$dating->id.'/edit') }}"><i class="far fa-pencil me-2"></i>Modificar</a>
                             </td>
                         </tr>
                         @endforeach

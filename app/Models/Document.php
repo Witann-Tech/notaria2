@@ -12,5 +12,5 @@ class Document extends Model
     use SoftDeletes;
 
     protected $table = "documents";
-    protected $fillable = ['id', 'name', 'description'];
+    protected $fillable = ['name', 'acceptable_formats', 'expiration_range', 'description'];
 }

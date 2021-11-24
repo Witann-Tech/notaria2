@@ -1,7 +1,5 @@
 @extends('layouts.admin')
 
-
-
 @section('content')
     <div class="row g-3 mb-4 align-items-center justify-content-between">
         <div class="col-auto">
@@ -46,9 +44,9 @@
                         <tr>
                             <td>{{ $customer->lastname }}</td>
                             <td>{{ $customer->curp }}</td>
-                            <td>{{ $customer->birthdate }}</td>
+                            <td>{{ date("d/m/Y", strtotime($customer->birthdate)) }}</td>
                             <td>
-                                <a class="btn app-btn-primary" href="{{ url('/admin/clientes/'.$customer->id) }}"><i class="far fa-pencil me-2"></i>Modificar</a>
+                                <a class="btn app-btn-primary" href="{{ url('/admin/clientes/'.$customer->id.'/edit') }}"><i class="far fa-pencil me-2"></i>Modificar</a>
                             </td>
                         </tr>
                         @endforeach

@@ -35,6 +35,10 @@ class AuthController extends Controller
             ]);
         }
 
+        if($user->password == NULL)
+        {
+            return view('auth.newClient', compact($user));
+        }
 
         if ($user->hasVerifiedEmail()) {
             if (Auth::attempt($request->only(['email', 'password']), $request->remember_me ? true : false)) {

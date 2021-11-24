@@ -11,10 +11,11 @@
 
     <meta name="description" content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
     <meta name="author" content="Xiaoying Riley at 3rd Wave Media">
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="icon" href="{{ asset('images/favicon.png') }}">
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
 	<link id="theme-style" rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <link id="theme-style" rel="stylesheet" href="{{ asset('css/portal.css') }}">
+    @yield('styles')
 
 </head>
 
@@ -68,8 +69,6 @@
                                         <div class="item p-3">
                                             <div class="row gx-2 justify-content-between align-items-center">
                                                 <div class="col-auto">
-                                                    <img class="profile-image"
-                                                        src="assets/images/profiles/profile-1.png" alt="">
                                                 </div>
                                                 <div class="col">
                                                     <div class="info">
@@ -133,8 +132,6 @@
                                         <div class="item p-3">
                                             <div class="row gx-2 justify-content-between align-items-center">
                                                 <div class="col-auto">
-                                                    <img class="profile-image"
-                                                        src="assets/images/profiles/profile-2.png" alt="">
                                                 </div>
                                                 <div class="col">
                                                     <div class="info">
@@ -215,7 +212,7 @@
                 <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
                     <ul class="app-menu list-unstyled accordion" id="menu-accordion">
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{ url('/admin/usuarios') }}" class="nav-link">
                                 <span class="nav-icon">
                                     <i class="far fa-users"></i>
                                 </span>
@@ -239,7 +236,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{ url('/admin/leyes') }}" class="nav-link">
                                 <span class="nav-icon">
                                     <i class="far fa-gavel"></i>
                                 </span>
@@ -247,7 +244,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{ url('/admin/instituciones') }}" class="nav-link">
                                 <span class="nav-icon">
                                     <i class="far fa-landmark"></i>
                                 </span>
@@ -255,7 +252,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{ url('/admin/tramites') }}" class="nav-link">
                                 <span class="nav-icon">
                                     <i class="fas fa-file-invoice"></i>
                                 </span>
@@ -263,7 +260,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{ url('/admin/consultas-uif') }}" class="nav-link">
                                 <span class="nav-icon">
                                     <i class="far fa-calendar"></i>
                                 </span>
@@ -271,7 +268,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{ url('/admin/resgistro-actividades') }}" class="nav-link">
                                 <span class="nav-icon">
                                     <i class="fal fa-clipboard-list"></i>
                                 </span>
@@ -302,7 +299,7 @@
                                 <ul class="submenu-list list-unstyled">
                                     <li class="submenu-item"><a class="submenu-link"
                                             href="{{ url('/admin/documentos')}}">Tipos de documentos</a></li>
-                                    <li class="submenu-item"><a class="submenu-link" href="account.html">Tipos de
+                                    <li class="submenu-item"><a class="submenu-link" href="{{ url('/admin/tipos-de-tramites') }}">Tipos de
                                             trámites</a></li>
                                     <li class="submenu-item"><a class="submenu-link" href="settings.html">Tipos de
                                             participantes</a></li>
@@ -884,6 +881,7 @@
             </div>
         </footer>
         <!--//app-footer-->
+        <div class="modal-backdrop" id="backdrop" style="display: none;"></div>
 
     </div>
     <!--//app-wrapper-->
@@ -894,11 +892,30 @@
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.min.js') }}"></script>
 
     <!-- Charts JS -->
-    <script src="{{ asset('plugins/chart.js/chart.min.js') }}"></script>
-    <script src="{{ asset('js/index-charts.js') }}"></script>
+    <!--<script src="{{ asset('plugins/chart.js/chart.min.js') }}"></script>
+    <script src="{{ asset('js/index-charts.js') }}"></script>-->
 
     <!-- Page Specific JS -->
     <script src="{{ asset('js/app2.js') }}"></script>
+    <script>
+
+function showModal(modal) {
+            document.getElementById("backdrop").style.display = "block"
+            document.getElementById(modal).style.display = "block"
+            document.getElementById(modal).classList.add("show")
+        }
+
+        function hideModal(modal) {
+            document.querySelectorAll('.modal-backdrop').forEach(e => {
+                e.style.display = "none"
+                e.classList.remove("show")
+            });
+            document.getElementById(modal).style.display = "none"
+            document.getElementById(modal).classList.remove("show")
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @yield('scripts')
 
 </body>
 

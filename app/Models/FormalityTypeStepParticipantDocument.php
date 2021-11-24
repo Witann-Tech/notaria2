@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FormalityTypeStepDocument extends Model
+class FormalityTypeStepParticipantDocument extends Model
 {
-    //use HasFactory;
+    use HasFactory;
 
-    protected $fillable = ["formality_type_step_id","document_id"];
+    public $timestamps = false;
 
     public function document()
     {

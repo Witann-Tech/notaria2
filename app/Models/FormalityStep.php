@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FormalitieStep extends Model
+class FormalityStep extends Model
 {
     protected $fillable = ['formalitie_id', 'formalitie_type_step_id', 'step_status_id'];
 

@@ -22,8 +22,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::prefix('admin')->group(function () {
         Route::resource('citas', Controllers\Assistant\DatingController::class);
+        Route::resource('tipos-de-tramites', Controllers\Assistant\FormalityTypeController::class);
+        Route::resource('tipos-de-tramites/{formalityId}/etapas', Controllers\Assistant\FormalityTypeStepController::class);
         Route::resource('documentos', Controllers\Assistant\DocumentController::class);
         Route::resource('usuarios', Controllers\Assistant\UserController::class);
         Route::resource('clientes', Controllers\Assistant\CustomerController::class);
+        Route::resource('tramites', Controllers\Assistant\FormalityController::class);
     });
 });

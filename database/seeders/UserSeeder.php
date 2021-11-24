@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'rol_id' => 1,
             'name' => 'Admin',
-            'email' => '',
+            'email' => 'admin@notaria.com',
             'password' => bcrypt('12345678'),
         ]);
     }
